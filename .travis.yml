@@ -1,0 +1,30 @@
+sudo: required
+services:
+  - docker
+  # build test image
+# before_install:
+# - docker build -t wwwfreedom/strapi-test -f ./Dockerfile.dev .
+
+script:
+  - docker build -t wwwfreedom/strapi-test -f ./Dockerfile.dev .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push wwwfreedom/strapi-test
+
+# after_success:
+#   # Log in to the docker CLI
+#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+#   # Take those images and push them to docker hub
+#   - docker push wwwfreedom/multila-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: ap-southeast-2
+  app: strapi-test-api
+  env: StrapiTestApi-env
+  bucket_name: elasticbeanstalk-ap-southeast-2-286246934562
+  bucket_path: strapi-api
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

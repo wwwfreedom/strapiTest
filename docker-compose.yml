@@ -31,7 +31,7 @@ services:
     networks:
       - strapi-app-network
     ports:
-      - "1337:1337"
+      - "80:1337"
 
   adminer:
     depends_on:
