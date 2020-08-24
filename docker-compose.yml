@@ -1,0 +1,48 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:latest"
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - strapi-app-network
+
+  api:
+    container_name: mystrapi
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    env_file: .env
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    volumes:
+      - /app/node_modules # this is saying don't override this folder
+      - .:/app # changes in the server is made available in the /app folder inside the docker image for server, don't need to rebuild images when making changes to source code in server
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - strapi-app-network
+    ports:
+      - "1337:1337"
+
+  adminer:
+    depends_on:
+      - postgres
+    image: adminer
+    restart: always
+    networks:
+      - strapi-app-network
+    ports:
+      - 8080:8080
+
+networks:
+  strapi-app-network:
+    driver: bridge

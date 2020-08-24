@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "books",
+  "info": {
+    "name": "book"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "Author": {
+      "type": "string"
+    },
+    "Country": {
+      "type": "string"
+    }
+  }
+}
