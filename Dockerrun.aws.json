@@ -1,18 +1,13 @@
 {
-  "AWSEBDockerrunVersion": 2,
-  "containerDefinitions": [
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "wwwfreedom/strapi-test",
+    "Update": "true"
+  },
+  "Ports": [
     {
-      "name": "mystrapi",
-      "image": "wwwfreedom/strapi-test",
-      "hostname": "api",
-      "essential": true,
-      "portMappings": [
-        {
-          "hostPort": 1337,
-          "containerPort": 80
-        }
-      ],
-      "memory": 900
+      "ContainerPort": 1337,
+      "HostPort": 1337
     }
   ]
 }
